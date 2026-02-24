@@ -1,0 +1,273 @@
+{
+  "updatedAt": "2025-07-22T21:33:08.000Z",
+  "createdAt": "2025-07-03T08:59:13.528Z",
+  "id": "9SG8wF41zb0Bd3R4",
+  "name": "AI telegtam generate an image",
+  "active": false,
+  "isArchived": true,
+  "nodes": [
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "options": {
+          "frequencyPenalty": 0.2,
+          "temperature": 0.7
+        }
+      },
+      "id": "1f1c7668-58a9-4e47-87b7-aef40e95e264",
+      "name": "OpenAI Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "position": [
+        -96,
+        112
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "openAiApi": {
+          "id": "1g63pFct9LOxvMbe",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionKey": "=chat_with_{{ $('Listen for incoming events').first().json.message.chat.id }}",
+        "contextWindowLength": 10
+      },
+      "id": "f3289885-cf38-4c39-8c96-65f8b4bb6417",
+      "name": "Window Buffer Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "position": [
+        32,
+        112
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "updates": "={{ [\"*\"] }}",
+        "additionalFields": {}
+      },
+      "id": "6ca3fa63-7451-4844-8cfe-880bb41e1955",
+      "name": "Listen for incoming events",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "position": [
+        -208,
+        -128
+      ],
+      "webhookId": "322dce18-f93e-4f86-b9b1-3305519b7834",
+      "typeVersion": 1,
+      "credentials": {
+        "telegramApi": {
+          "id": "SFEek6Dv1fb0sqny",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Generate an image with Dall-E-3 and send it via Telegram",
+        "height": 553.452795998601,
+        "width": 926.3188190787038,
+        "color": 7
+      },
+      "id": "20ae894a-a1b1-407b-a6b8-08f670b240fc",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -288,
+        -240
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Listen for incoming events').first().json.message.from.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "id": "d2101774-6a14-417f-855e-8cb70564fba1",
+      "name": "Send final reply",
+      "type": "n8n-nodes-base.telegram",
+      "position": [
+        400,
+        -128
+      ],
+      "typeVersion": 1.1,
+      "webhookId": "aebe1c83-44ee-4afa-8ec5-3ef25078dc99",
+      "credentials": {
+        "telegramApi": {
+          "id": "SFEek6Dv1fb0sqny",
+          "name": "Telegram account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "operation": "sendDocument",
+        "chatId": "={{ $('Listen for incoming events').first().json.message.from.id }}",
+        "file": "={{ $fromAI(\"url\", \"a valid url of an image\", \"string\", \" \") }}",
+        "additionalFields": {}
+      },
+      "id": "72bbf8b4-d541-4c22-bba0-fd68bda20fd9",
+      "name": "Send back an image",
+      "type": "n8n-nodes-base.telegramTool",
+      "position": [
+        384,
+        112
+      ],
+      "typeVersion": 1.2,
+      "webhookId": "0817575b-b855-4355-b694-115c27839b43",
+      "credentials": {
+        "telegramApi": {
+          "id": "SFEek6Dv1fb0sqny",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "Call this tool to request a Dall-E-3 model, when the user asks to draw something. If you gеt a response from this tool, forward it to the Telegram tool.",
+        "method": "POST",
+        "url": "https://api.openai.com/v1/images/generations",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "parametersBody": {
+          "values": [
+            {
+              "name": "model",
+              "valueProvider": "fieldValue",
+              "value": "dall-e-3"
+            },
+            {
+              "name": "prompt"
+            }
+          ]
+        }
+      },
+      "id": "28403dac-9e19-4bc4-a757-873c00306678",
+      "name": "Generate image in Dalle",
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "position": [
+        208,
+        112
+      ],
+      "typeVersion": 1.1,
+      "credentials": {
+        "openAiApi": {
+          "id": "1g63pFct9LOxvMbe",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "options": {
+          "systemMessage": "=You are a helpful assistant. You are communicating with a user named {{ $json.message.from.first_name }}. Address the user by name every time. If the user asks for an image, always send the link to the image in the final reply."
+        }
+      },
+      "id": "3148eb84-b32f-486f-8f6f-c7125fc97a49",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        48,
+        -128
+      ],
+      "typeVersion": 1.7
+    }
+  ],
+  "connections": {
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send final reply",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send back an image": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate image in Dalle": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Listen for incoming events": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "a8bb15fd-15e5-4376-b467-19b8ae7f9f3d",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-02-16T15:42:18.700Z",
+      "createdAt": "2026-02-16T15:42:18.700Z",
+      "role": "workflow:owner",
+      "workflowId": "9SG8wF41zb0Bd3R4",
+      "projectId": "NcxzszH5HBFjVznJ"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
