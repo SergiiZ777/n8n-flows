@@ -1,0 +1,290 @@
+{
+  "updatedAt": "2025-12-13T16:32:06.000Z",
+  "createdAt": "2025-12-13T16:01:50.335Z",
+  "id": "juYOQ8x2QvlAKDEr",
+  "name": "Website Chatbot",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -64,
+        16
+      ],
+      "id": "f2f0f66a-f23b-4dfb-8dad-a61e0b3ff668",
+      "name": "When chat message received",
+      "webhookId": "967df47c-e2da-43ca-9c29-cd64295ca830"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.chatInput }}",
+        "options": {
+          "systemMessage": "=** Role & Purpose **  \nYou are a Customer Support AI Agent for DFA Course Academy. Your purpose is to deliver fast, accurate, and friendly support by answering learner questions using verified information from the vector database and official Q&A. You act as a dependable guide for both prospective and enrolled learners.\n\n** Capabilities **  \n- Retrieve, verify, and summarize information from the vector database.  \n- Answer questions about course access, topics, certification, pricing, refunds, and eligibility.  \n- Provide guidance on AI, automation, Notion, and Zapier concepts included in DFA content.  \n- Offer links, steps, or recommendations for enrolling, accessing lessons, or joining communities.  \n- Detect missing or uncertain data and communicate transparently.  \n- Maintain clarity, empathy, and professional support quality in every interaction.\n\n** Tools **  \nOpenAI Chat Model – processes user prompts and generates responses.  \nSimple Memory – stores and recalls short-term conversation context.  \nThink – performs chain-of-thought reasoning before responding.  \nVector Database (Pinecone) – retrieves ranked, relevant course and support information.  \nAnswer Questions with Vector Store – uses retrieved embeddings to produce accurate answers.  \nEmbeddings OpenAI – converts text into embeddings for vector search.  \nCreate an event in Google Calendar – schedules meetings or sessions when requested.  \nGet availability in Google Calendar – checks availability before confirming events.  \nSend a message in Superchat – must be used at the end of every run to deliver the final message.\n\n** Interaction Style **  \n- Warm, supportive, and professional tone.  \n- Use short, clear, jargon-free sentences.  \n- Confirm understanding before giving technical or multi-step instructions.  \n- End with a helpful suggestion or offer to clarify.\n\n** Example Output **  \n**User:** “Do your courses work for beginners?”  \n**AI:** “Yes! All DFA Course Academy courses are beginner-friendly and guide you step by step into more advanced topics. You’ll be able to follow along even with no prior experience.”\n\n** Notes **  \n- Always prioritize verified information from the vector database and official Q&A.  \n- If information is missing, say so honestly and direct users to the community or support email.  \n- Never assume pricing, updates, or course changes unless explicitly found in the data.  \n- Keep responses concise—ideally under 5 sentences unless deeper detail is needed.  \n- Current date: {{ $now }}.  \n- When scheduling a meeting, always request: (1) date, (2) time, (3) purpose, and (4) email for the event description.  \n- After generating your final answer, **always** use the Superchat tool as the last step to send the complete response.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3,
+      "position": [
+        208,
+        0
+      ],
+      "id": "d4489b07-bb4f-4097-b9b1-a42508181740",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        -416,
+        176
+      ],
+      "id": "bb1440e7-072c-4b7b-96a4-45bce0f340d6",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -128,
+        224
+      ],
+      "id": "f0aef594-ea06-48d0-a269-cbc483163e87",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1.1,
+      "position": [
+        192,
+        224
+      ],
+      "id": "53bbb24a-38bf-497c-96dc-2881f0eb3d62",
+      "name": "Answer questions with a vector store"
+    },
+    {
+      "parameters": {
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "company-data",
+          "mode": "list",
+          "cachedResultName": "company-data"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.3,
+      "position": [
+        -32,
+        416
+      ],
+      "id": "4a9839a8-9822-4b90-bdaa-61ac464cbb20",
+      "name": "Pinecone Vector Store"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.3,
+      "position": [
+        304,
+        416
+      ],
+      "id": "2f99dc2d-89d3-4606-9859-76cc206f6bd4",
+      "name": "OpenAI Chat Model1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "options": {
+          "dimensions": 1024
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -80,
+        576
+      ],
+      "id": "42d95345-c3f3-4b94-aef6-143961288aa3",
+      "name": "Embeddings OpenAI"
+    },
+    {
+      "parameters": {
+        "description": "You must make sure you use superchat tool"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolThink",
+      "typeVersion": 1.1,
+      "position": [
+        32,
+        224
+      ],
+      "id": "c67430bf-ec2c-41a5-b833-22a34b987789",
+      "name": "Think"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-superchat.superchatTool",
+      "typeVersion": 1,
+      "position": [
+        864,
+        224
+      ],
+      "id": "30386378-9301-4ab4-8f0b-44c9b521388b",
+      "name": "Send a message in Superchat",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "krystian7431@gmail.com",
+          "mode": "list",
+          "cachedResultName": "krystian7431@gmail.com"
+        },
+        "start": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start', ``, 'string') }}",
+        "end": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End', ``, 'string') }}",
+        "additionalFields": {
+          "description": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Description', ``, 'string') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        512,
+        224
+      ],
+      "id": "98dc4e3b-b7f7-4ff7-af08-6a6730db9d09",
+      "name": "Create an event"
+    },
+    {
+      "parameters": {
+        "resource": "calendar",
+        "calendar": {
+          "__rl": true,
+          "value": "krystian7431@gmail.com",
+          "mode": "list",
+          "cachedResultName": "krystian7431@gmail.com"
+        },
+        "timeMin": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Start_Time', ``, 'string') }}",
+        "timeMax": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('End_Time', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        688,
+        224
+      ],
+      "id": "90e6dfae-0701-47d0-8372-636fdace59ef",
+      "name": "Get availability"
+    }
+  ],
+  "connections": {
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Answer questions with a vector store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Think": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get availability": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "9eeb1cf3-35f2-4138-b066-4ba62cb6bac6",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-02-16T15:42:18.700Z",
+      "createdAt": "2026-02-16T15:42:18.700Z",
+      "role": "workflow:owner",
+      "workflowId": "juYOQ8x2QvlAKDEr",
+      "projectId": "NcxzszH5HBFjVznJ"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
