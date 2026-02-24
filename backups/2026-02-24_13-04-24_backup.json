@@ -1,0 +1,80 @@
+{
+  "updatedAt": "2025-11-30T20:38:34.855Z",
+  "createdAt": "2025-11-30T20:38:34.855Z",
+  "id": "MKbJ6pFO91pPtbMu",
+  "name": "My workflow 10",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        0,
+        0
+      ],
+      "id": "f90c6d2c-e03d-43e7-9054-bb1f8c110ac4",
+      "name": "When chat message received",
+      "webhookId": "d5e45e40-0200-4201-9d4c-5acaed627d44"
+    },
+    {
+      "parameters": {
+        "postAs": "organization",
+        "organization": "109181157",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "7da35d6d-39cc-4cee-9147-aa444d78425c",
+      "name": "Create a post",
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "B6CbChd68JGCtTn5",
+          "name": "n8n authoposting"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Create a post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "3c8dbd66-97a7-49a8-90d7-a8673d25b8ba",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-02-16T15:42:18.700Z",
+      "createdAt": "2026-02-16T15:42:18.700Z",
+      "role": "workflow:owner",
+      "workflowId": "MKbJ6pFO91pPtbMu",
+      "projectId": "NcxzszH5HBFjVznJ"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
