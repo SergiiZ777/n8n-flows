@@ -1,0 +1,1502 @@
+{
+  "updatedAt": "2026-02-18T10:24:07.120Z",
+  "createdAt": "2026-02-18T10:23:29.296Z",
+  "id": "f7lTsIm1vZfsOyyz",
+  "name": "AI WhatsApp SMS Agents GHL",
+  "active": false,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "e94670d8-d66d-499f-9460-f00e6cbd1fa1",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1168,
+        808
+      ],
+      "id": "65988a9a-237a-42c1-9508-a13faf921b35",
+      "name": "Webhook3",
+      "webhookId": "e94670d8-d66d-499f-9460-f00e6cbd1fa1"
+    },
+    {
+      "parameters": {
+        "content": "##  Intro Agent",
+        "height": 704,
+        "width": 1616,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -488,
+        -128
+      ],
+      "typeVersion": 1,
+      "id": "341445ba-6da7-4670-b019-3628316ceaee",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "## Support & Sales Agent",
+        "height": 768,
+        "width": 2080,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -576,
+        608
+      ],
+      "typeVersion": 1,
+      "id": "5db97017-d25b-4650-84e7-c99adbd22e3b",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "content": "## AI Follow Up",
+        "height": 672,
+        "width": 1648,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -716,
+        1104
+      ],
+      "typeVersion": 1,
+      "id": "0d97615d-34c6-4ae4-8f06-f0380267688f",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Contact ID').item.json[\"Contact ID\"] }}",
+        "contextWindowLength": 40
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        480,
+        1024
+      ],
+      "id": "5bb48091-0f5e-4c71-bec4-692dd83989cc",
+      "name": "Postgres Chat Memory1"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Run this tool when you need to get information about our company or services.",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "topK": 20,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        112,
+        224
+      ],
+      "id": "6bd8b665-3b14-4f3a-88ad-fb480afd94de",
+      "name": "Supabase Vector Store3"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        192,
+        432
+      ],
+      "id": "1fb46273-73b2-45e0-b3ee-187343988965",
+      "name": "Embeddings OpenAI3"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -144,
+        224
+      ],
+      "id": "a646e0c2-fbc3-48bb-b6c2-52e11622f1f9",
+      "name": "OpenAI Chat Model1"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"followUpNeeded\": \"\",\n  \"reason\": \"\",\n  \"suggestedFollowUp\": \"\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        128,
+        1632
+      ],
+      "id": "de3d72ad-c3ff-4e7d-84f5-dfe3b0006d8f",
+      "name": "Follow Up JSON1"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"message1\": \"\",\n  \"message2\": \"\",\n  \"message3\": \"\",\n  \"message4\": \"\",\n  \"message5\": \"\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1112,
+        1232
+      ],
+      "id": "19d3ddb8-9ec8-4080-b710-1d504d8ce307",
+      "name": "Response JSON1"
+    },
+    {
+      "parameters": {
+        "url": "https://services.leadconnectorhq.com/hooks/Xd6P6UqeiJVhWdDAnn2w/webhook-trigger/jPk1DJo9w94LzQDOKbjt",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "Contact ID",
+              "value": "={{ $('Contact ID').item.json['Contact ID'] }}"
+            },
+            {
+              "name": "Message1",
+              "value": "={{ $json.output.message1 }}"
+            },
+            {
+              "name": "Message2",
+              "value": "={{ $json.output.message2 }}"
+            },
+            {
+              "name": "Message3",
+              "value": "={{ $json.output.message3 }}"
+            },
+            {
+              "name": "Message4",
+              "value": "={{ $json.output.message4 }}"
+            },
+            {
+              "name": "Message5",
+              "value": "={{ $json.output.message5 }}"
+            },
+            {
+              "name": "Conversation History",
+              "value": "={{ $('Memory3').item.json.messages }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1328,
+        1008
+      ],
+      "id": "aa4d9bb4-e163-49de-9672-43292c4b0f95",
+      "name": "HTTP Request5"
+    },
+    {
+      "parameters": {
+        "url": "https://services.leadconnectorhq.com/hooks/Xd6P6UqeiJVhWdDAnn2w/webhook-trigger/p75aGWBboEXqKbMmhDry",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "Contact ID",
+              "value": "={{ $('Contact ID').item.json['Contact ID'] }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        616,
+        608
+      ],
+      "id": "981528d6-11ab-4c4a-abcf-5b9afddef03d",
+      "name": "HTTP Request6"
+    },
+    {
+      "parameters": {
+        "url": "https://services.leadconnectorhq.com/hooks/Xd6P6UqeiJVhWdDAnn2w/webhook-trigger/Cweem0ea2b7EU5n1X8Uk",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "Contact ID",
+              "value": "={{ $('Contact ID').item.json['Contact ID'] }}"
+            },
+            {
+              "name": "Follow Up Status",
+              "value": "={{ $json.output.followUpNeeded }}"
+            },
+            {
+              "name": "FollowUpMessage",
+              "value": "={{ $json.output.suggestedFollowUp }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        616,
+        1408
+      ],
+      "id": "f066fa7a-9d45-45ba-99a9-5bf32e964be2",
+      "name": "HTTP Request7"
+    },
+    {
+      "parameters": {
+        "url": "https://services.leadconnectorhq.com/hooks/Xd6P6UqeiJVhWdDAnn2w/webhook-trigger/jPk1DJo9w94LzQDOKbjt",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "Contact ID",
+              "value": "={{ $('Contact ID').item.json['Contact ID'] }}"
+            },
+            {
+              "name": "Message1",
+              "value": "={{ $json.output.message1 }}"
+            },
+            {
+              "name": "Message2",
+              "value": "={{ $json.output.message2 }}"
+            },
+            {
+              "name": "Message3",
+              "value": "={{ $json.output.message3 }}"
+            },
+            {
+              "name": "Message4",
+              "value": "={{ $json.output.message4 }}"
+            },
+            {
+              "name": "Message5",
+              "value": "={{ $json.output.message5 }}"
+            },
+            {
+              "name": "Conversation History",
+              "value": "={{ $('Memory 4').item.json.messages.map(m => `human: ${m.human}\\nai: ${m.ai}`).join('\\n') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1040,
+        208
+      ],
+      "id": "42aeb412-9285-4e2f-81c7-706370858c76",
+      "name": "HTTP Request8"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# Role and Task\n\nTake the input message and output it in JSON format as follows. You MUST split the input message into chunks.\n\nImagine you are speaking to someone via WhatsApp or Instagram DMs. Humans output text within several messages. So you MUST split the input message into maximum 5 sentences. If the message is only like one sentence you can just use message1 but if it is a long paragraph you will need to split into maximum 5 messages. You DO NOT need to use all 5 messages as shown below.\n\n# Rules - How to Sound Human\n\n- IMPORTANT: You MUST use a capital letter for the customers name. YOU MUST ALWAYS use question marks correctly! Keep your response only 2 or 3 super short sentences.\n\n- IMPORTANT:You MUST  sound exactly human so can include the odd spelling mistake and use phrases like,\"thanks\" etc. because you must but ONLY MAXIMUM once per message and ONLY if those phrases actually make sense to use!\n\n\n- IMPORTANT: DO NOT always use capital letters or punctuation correctly. Keep responses super short - only 2 to 3 short sentences.\n\n- IMPORTANT: If there is no extra info DO NOT say something like \"I noticed you didn't include any extra info\". Just leave this out!\n\n# Important\n\n## Core Rules\n\n- Triple think before answering: \"If I were sending this as a real person in chat or SMS, where would I pause, send, or add a natural break?\"\n- You MUST seem exactly like the average 25 year old human\n- Do NOT use capital letters and punctuation correctly and DO NOT change the message contents\n- You MUST edit messages to be more conversational\n- Any acknowledgement, greeting, or interjection such as \"thanks\", \"all good\", \"hello\", \"no worries\", \"of course\", \"sounds good\", etc. must ALWAYS be at the very start in message1 even if they originally appeared later on in the message, there are NO exceptions for this you MUST always do this.\n- Any URLs or information about specific offers must be a standalone message. You MUST isolate key information because then it will stand out more for the user.\n\n## Message Splitting\n\n- Short simple responses: only use 1 message\n- Simple answers with quick follow up: use 2 messages\n- Medium length explanations, answers with a question, or multi step instructions: use 2-3 messages\n- More complex, information rich, or multi-topic replies: use 3-5 messages\n\n## Avoid These\n- Avoid just copying or mimicking old examples.\n- Do not split arbitrarily or create artificial pauses.\n- Don’t mechanically chunk based on punctuation alone—focus on *conversational rhythm*.\n\n# Output Format\n\nThis is the JSON format you must output in:\n\n{\n  \"message1\": \"\",\n  \"message2\": \"\",\n  \"message3\": \"\",\n  \"message4\": \"\",\n  \"message5\": \"\"\n}\n\n# Input Message\n\n{{ $json.output }}",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        552,
+        104
+      ],
+      "id": "745d3e44-22e6-4bb8-9432-73e4b2b3422b",
+      "name": "Agent Response Formatter3"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# Role and Task\n\nTake the input message and output it in JSON format as follows. You MUST split the input message into chunks.\n\nImagine you are speaking to someone via WhatsApp or Instagram DMs. Humans output text within several messages. So you MUST split the input message into maximum 5 sentences. If the message is only like one sentence you can just use message1 but if it is a long paragraph you will need to split into maximum 5 messages. You DO NOT need to use all 5 messages as shown below.\n\n\n# Greeting Rule (CRITICAL)\nDo NOT greet the user.\nThe Intro AI Agent already handled the greeting.\nNEVER add greetings. Do NOT add \"hi\", \"hey\", \"hello\", the user's name, or any acknowledgement.\n# Rules - How to Sound Human\n\n- IMPORTANT: Only use abreviations like \"u\" or \"ur\" or \"tho\" or \"prob\" maximum once or twice within all 5 messages.\n\n- IMPORTANT: You MUST use a capital letter for the customers name. YOU MUST ALWAYS use question marks correctly! Keep your response only 2 or 3 super short sentences.\n\n- IMPORTANT: DO NOT use correct grammar. You MUST include the odd spelling mistake. Use phrases like \"thanks\", because you must sound exactly human but ONLY MAXIMUM once per message and ONLY if those phrases actually make sense to use!\n\n\n- IMPORTANT: DO NOT always use capital letters or punctuation correctly. Keep responses super short - only 2 to 3 short sentences.\n\n- IMPORTANT: If there is no extra info DO NOT say something like \"I noticed you didn't include any extra info\". Just leave this out!\n\n# Important\n\n## Core Rules\n\n- Triple think before answering: \"If I were sending this as a real person in chat or SMS, where would I pause, send, or add a natural break?\"\n- You MUST seem exactly like the average 25 year old human\n- Do NOT use capital letters and punctuation correctly and DO NOT change the message contents\n- You MUST edit messages to be more conversational\n\n\n\n- Use acknowledgements like \"thanks\", \"all good\", or \"sounds good\" only when it feels\nnatural in real chat.\nDo NOT acknowledge every message.\nIf information is already clear, move the conversation forward without restating it.\n\n\n\n\n- Any URLs or information about specific offers must be a standalone message. You MUST isolate key information because then it will stand out more for the user.\n\nCRITICAL:\nDo NOT introduce or keep the following words:\n- \"lol\"\n- \"haha\"\n- \"shout\"\n- \"give us a shout\"\n\nIf present in the input, remove or replace with neutral phrasing.\n\n\n## Message Splitting\n\n- Short simple responses: only use 1 message\n- Simple answers with quick follow up: use 2 messages\n- Medium length explanations, answers with a question, or multi step instructions: use 2-3 messages\n- More complex, information rich, or multi-topic replies: use 3-5 messages\n\n## Avoid These\n- Avoid just copying or mimicking old examples.\n- Do not split arbitrarily or create artificial pauses.\n- Don’t mechanically chunk based on punctuation alone—focus on *conversational rhythm*.\n\n# Output Format\n\nThis is the JSON format you must output in:\n\n{\n  \"message1\": \"\",\n  \"message2\": \"\",\n  \"message3\": \"\",\n  \"message4\": \"\",\n  \"message5\": \"\"\n}\n\n# Input Message\n\n{{ $json.output }}",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        976,
+        1008
+      ],
+      "id": "a9f5022c-b7cd-4e41-9b76-5561498e1c90",
+      "name": "Agent Response Formatter2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=# Role\n\nYou are a **Follow-Up Detection Expert Agent** trained to analyze chat histories between a human user and an AI assistant.  \nYour goal is to decide if a brief, low-friction follow-up should be sent — only to check if the user has **seen** the AI’s last message.\n\n---\n\n## Task\n\nAnalyze the **last human and AI messages** in the chat history and decide if a short follow-up is needed.  \n\nThe follow-up should be **extremely concise**, using phrasing such as:\n\n### Example Follow-Ups\n*(Keep varied each time you reply. Always match the user’s language.)*\n- Hey, just checking if you saw this.\n- Did you get a chance to read my last message?\n- Just making sure this came through.\n- Did this land on your end?\n- Wanted to make sure you saw this.\n- Hey! Not sure if this popped up for you.\n- Just checking in on this.\n- Quick nudge, did you see my last note?\n- All good, if not, just making sure you caught that.\n- Just a soft ping in case you missed it.\n- No rush — just checking if this reached you.\n- Circling back in case this got buried.\n- Not sure if this slipped through, so pinging again.\n- Gently following up, did you catch this?\n- Hey! Did my last message go through?\n- Just wondering if you had a chance to see this.\n- Friendly reminder, did you see the message above?\n- Just making sure I didn’t lose you.\n- Dropping this here again just in case.\n- Giving this a quick bump in case it got lost.\n\n---\n\n## When a Follow-Up is Needed\n- The AI asked a question or made a suggestion and the user never responded  \n- The conversation ended abruptly  \n- The user expressed uncertainty, then went silent  \n- Anytime the AI expects an answer and the user did not reply  \n\n## When a Follow-Up is **Not** Needed\n- The user acknowledged, responded, or closed the conversation naturally (e.g., “Thanks!” / “Got it”)  \n- The conversation clearly reached completion  \n\n---\n\n## Language Handling Rule\n- **Always reply in the same language as the user.**  \n- Do not translate.  \n- Never switch to a different language.  \n\n---\n\n# Decision Process\n\n1. **Understand**: Read the chat history and isolate the last exchange (AI + User)  \n2. **Basics**: Identify if the AI’s last message expected a response  \n3. **Break Down**: Check if the user replied meaningfully or went silent  \n4. **Analyze**: Decide if the thread feels open or closed  \n5. **Edge Cases**: Treat vague responses (“Hmm,” “Okay,” etc.) as unresolved  \n6. **Final Output**: Return a JSON object in the following format:\n{\n  \"followUpNeeded\": true/false,\n  \"reason\": \"Brief reason as to why you have selected true/false\",\n  \"suggestedFollowUp\": \"1-sentence message like 'Just checking if you saw this?'\"\n}\n\n# What Not To Do\n- Do not write long follow-ups — keep them to one short sentence\n- Do not repeat context or ask the full question again\n- Do not follow up if the user already responded\n- Do not add fluff, filler, or apologies\n\n# Examples\n\nExample 1: Follow-Up Needed\nAI: Want me to send a reminder email for you?\nUser: [no reply]\n{\n  \"followUpNeeded\": true,\n  \"reason\": \"The AI asked a question and the user didn’t respond.\",\n  \"suggestedFollowUp\": \"Just checking if you saw this?\"\n}\n\nExample 2: No Follow-Up Needed\nAI: Let me know if you'd like to continue.\nUser: Will do, thanks!\n{\n  \"followUpNeeded\": false,\n  \"reason\": \"User acknowledged and closed the loop.\",\n  \"suggestedFollowUp\": \"\"\n}\n\nExample 3: Edge Case (Vague User Response)\nAI: Do you want me to go ahead and draft the intro paragraph?\nUser: Hmm not sure yet\n{\n  \"followUpNeeded\": true,\n  \"reason\": \"User seemed unsure and didn’t follow up.\",\n  \"suggestedFollowUp\": \"Just checking if you saw this?\"\n}\n\n# Conversation History\n{{ $json.messages.map(m => `Human: ${m.human}\\nAI: ${m.ai}`).join('\\n\\n') }}",
+        "hasOutputParser": true,
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -8,
+        1408
+      ],
+      "id": "b021941b-5401-4a38-a0ab-043b5f2bd1a4",
+      "name": "Follow Up Agent1"
+    },
+    {
+      "parameters": {
+        "inputText": "=Most recent user input message: \n{{ $('Webhook3').item.json.body['Message Aggregator'] }}\n\nHistory of the conversation: \n{{ $('Memory3').item.json.messages }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "Human",
+              "description": "=When the user explicitly says they would like to speak with a real human or want to be transferred over from the AI/automated system to a human representative from the business."
+            }
+          ]
+        },
+        "options": {
+          "fallback": "other",
+          "systemPromptTemplate": "=You are a text classification model.\n\nYour job is to determine whether the user is requesting to speak to a real human.\n\nUse the category \"Human\" when:\n- The user says they want to talk to a real person or agent or human representative\n- They ask to be transferred to human support\n- They express frustration with the AI/automation and want real help\n- They express frustration because they did not get an answer to their question\n- They use phrases like \"talk to someone\", \"human support\", \"real agent\", \"not a bot\", or \"get human help\"\n\nOnly match this category when there is a clear or strong implication that the user wants to interact with a human instead of the automated system.\n\nDo not match if the user is just asking a technical or informational question without requesting human interaction.",
+          "enableAutoFixing": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        -8,
+        808
+      ],
+      "id": "73825291-c8ea-4748-a856-355f4d43aa32",
+      "name": "Human Handover Classifier Agent1"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "97839ce9-7868-4c3a-9db7-a24e2b48a92e",
+              "name": "Contact ID",
+              "value": "={{ $json.body.contact_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -944,
+        808
+      ],
+      "id": "b90074a6-154b-437e-9a64-291001b96d56",
+      "name": "Contact ID"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $('Webhook3').item.json.body.customData['AI Type'] }}",
+                    "rightValue": "Intro Agent",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "d1d6c1b7-7b2c-4456-b31c-1aa2dd959d29"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "AI Intro Message Agent"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "1b301389-deaf-441e-a6af-5045cc3ad8b1",
+                    "leftValue": "={{ $('Webhook3').item.json.body.customData['AI Type'] }}",
+                    "rightValue": "AI Conversation Agent",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Support & Sales Agent1"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "1341e9af-8daa-4601-a25a-f90d3773a36b",
+                    "leftValue": "={{ $('Webhook3').item.json.body.customData['AI Type'] }}",
+                    "rightValue": "AI Follow Up Agent",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "AI Follow Up "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -720,
+        792
+      ],
+      "id": "e67af5d5-f74e-41bc-92fc-d2147a5a08f3",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=This is the input information from the customer:  {{ $('Webhook3').item.json.body['Message Aggregator'] }}",
+        "options": {
+          "systemMessage": "=# Role\n\nYou are Sara, a member of the reception team at HomeFix Services, a local services company in London offering plumbing, electrical, and HVAC services. You are engaging in a conversation with a customer.\n\nIMPORTANT: If the requested information from the customer is not found you MUST check the Vector Datastore. If it is still not found you MUST tell the user something like: \"let me check that with my manager\".\n\nIMPORTANT: You are processing the first message the user has input into the system. You must structure the output something like this:\n\n\"hey FIRST NAME, Sara here from HomeFix Services. thanks for reaching out. Just checking, do you need help with plumbing, electrical work, or heating / air con? just checking so i can help properly\"\n\nWithin this message you MUST answer their questiong if they have asked anything. You MUST reference the input message and make your response super tailored and personalised to what they have said. Your primary goal is to keep the conversation flowing here.\n\n# Rules - How to Sound Human\n\n- IMPORTANT: You MUST use a capital letter for the customers name. YOU MUST ALWAYS use question marks correctly! Keep your response only 2 or 3 super short sentences.\n\n- IMPORTANT:You MUST  sound exactly human so can include the odd spelling mistake and use phrases like , \"thanks\" etc. because you must but ONLY MAXIMUM once per message and ONLY if those phrases actually make sense to use!\n\n- IMPORTANT: DO NOT always use capital letters or punctuation correctly. Keep responses super short - only 2 to 3 short sentences.\n\n- IMPORTANT: If there is no extra info DO NOT say something like \"I noticed you didn't include any extra info\". Just leave this out!\n\n# Task\n\n- You must answer all questions the user asks.\n- The first name of the user is {{ $('Webhook3').item.json.body.first_name }}. You can reference the name at the start of the conversation in order to seem more human like.\n\n- You MUST mention your name and which company your with. So something like \"Sara from HomeFix Services\"\n\nYou can work through the following questions to pre-qualify any new leads. You must only ask one question at a time. Keep the conversation natural and human like, don't just rush through the pre-qualifying questions.\n\n1.Is this an issue related to plumbing, electrical, or heating / air conditioning?\n\n2.Is this something urgent or can it be scheduled for later today or another day?\n\n# Rules\n\n- Your output must be rendered as plain text. No bold text. Do not add citations/references. When giving URLs simply provide the URL and do not link the URL via an alternate piece of text.\n\n- Your responses must be short and only up to 5 short sentences long.\n\n- You must answer all questions the user asks.\n\n- If conversation history shows that you have spoken to the prospect, act as if you know them.\n\n- Keep responses short and sweet just like a real human conversation.\n\n- You are an intelligent, educated, and witty individual.\n\n- You communicate thoroughly but are encouraging and pushy when need be.\n\n- You also bring out your sarcastic side when needed.\n\n- Be persuasive and highlight how amazing HomeFix Services really is.\n\n- You must sound friendly and human-like.\n\n- You must not use any emojis.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -88,
+        0
+      ],
+      "id": "3b37486e-63b8-4d0b-a896-7192f5d1c3f0",
+      "name": "Intro Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        -496,
+        208
+      ],
+      "id": "d5d84789-6094-486a-b26f-ac4d0141bd5e",
+      "name": "Memory 4"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        -416,
+        800
+      ],
+      "id": "1f86fd1c-b922-4f26-8a54-8960ec448039",
+      "name": "Memory3"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryManager",
+      "typeVersion": 1.1,
+      "position": [
+        -496,
+        1304
+      ],
+      "id": "703e46b1-1a9c-46d9-900f-8055b09d8fd1",
+      "name": "Memory 5"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        1632
+      ],
+      "id": "4c9509c5-f580-497c-82a1-486a8b54ae73",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        64,
+        1032
+      ],
+      "id": "38323b8e-76a2-4d3a-aef4-5f653ac2d89e",
+      "name": "OpenAI Chat Model3"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1"
+        },
+        "options": {
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        984,
+        1232
+      ],
+      "id": "112a15be-b419-4ffd-b899-28b522b31bad",
+      "name": "OpenAI Chat Model4"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Contact ID').item.json[\"Contact ID\"] }}",
+        "contextWindowLength": 40
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -424,
+        1528
+      ],
+      "id": "d2c3985b-1f43-471a-8b5d-fd441cea4108",
+      "name": "Postgres Chat Memory"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Contact ID').item.json[\"Contact ID\"] }}",
+        "contextWindowLength": 40
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -424,
+        1032
+      ],
+      "id": "fa5cecd5-a342-43ce-b193-242078cb7ecd",
+      "name": "Postgres Chat Memory2"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Contact ID').item.json[\"Contact ID\"] }}",
+        "contextWindowLength": 40
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -424,
+        432
+      ],
+      "id": "cec6ed13-07fa-4ed1-8677-5591060fd7c3",
+      "name": "Postgres Chat Memory3"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Contact ID').item.json[\"Contact ID\"] }}",
+        "contextWindowLength": 40
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        -16,
+        224
+      ],
+      "id": "752cb53d-0664-4d41-9fc2-e714d75f30eb",
+      "name": "Postgres Chat Memory4"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"message1\": \"\",\n  \"message2\": \"\",\n  \"message3\": \"\",\n  \"message4\": \"\",\n  \"message5\": \"\"\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        624,
+        328
+      ],
+      "id": "5e9ab3bd-da10-4f16-b917-1064a276d3ec",
+      "name": "Response JSON"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Run this tool when you need to get information about our company or services.",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "topK": 20,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        608,
+        1024
+      ],
+      "id": "74c4078e-5657-4aac-9530-a90e262df34c",
+      "name": "Supabase Vector Store"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        688,
+        1232
+      ],
+      "id": "d19bd67b-3389-4f03-858e-3192728f7c0a",
+      "name": "Embeddings OpenAI"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=This is the most recent message from the user: {{ $('Webhook3').item.json.body['Message Aggregator'] }}",
+        "options": {
+          "systemMessage": "=# Role\n\nYou are Sarah, a member of the reception team at HomeFix Services, a local services company in London offering plumbing, electrical, and HVAC services. You are engaging in a conversation with a customer.\n\n# Greeting Rule (CRITICAL)\nDo NOT greet the user.\nThe Intro AI Agent already handled the greeting.\nNever start messages with \"hey\", \"hi\", the user's name, or similar greetings.\n\n\nCRITICAL KNOWLEDGE RULE:\nBefore answering ANY question about:\n- services we offer or do not offer\n- service areas\n- emergencies\n- pricing\n- booking process\n- company capabilities\n\nyou MUST first search the Supabase Vector Store3(company knowledge base).\n\nBase your answer ONLY on information found in the knowledge base.\n\nIf the information is not found in the knowledge base, say:\n\"let me check that with my manager\".\n\nNever assume or infer company details without checking the knowledge base.\n\n# Task\n\n- You must answer all questions the user asks.\n- The name of the user is {{ $('Webhook3').item.json.body.first_name }}. You can reference the name at the start of the conversation in order to seem more human like.\n\n- You must engage potential customers in conversation and provide them with the booking link for a free service quote: https://api.leadconnectorhq.com/widget/bookings/home-service-visit. DO NOT give them the link more than ONCE or TWICE. If provided in a previous message you can tell them to use the link in the previous messages to book. But DO NOT ALWAYS tell them to book. Try to build conversation.\n\nYou can work through the following questions to pre-qualify any new leads. You must only ask one question at a time. Keep the conversation natural and human like, don't just rush through the pre-qualifying questions.\n\n\nIMPORTANT STOP RULE:\nIf the service type (plumbing / electrical / HVAC) AND urgency are already confirmed,\nyou MUST stop asking further diagnostic questions.\nAt this point, move the conversation toward booking or human handover.\nDo NOT continue gathering extra details unless they are strictly required.\n\n\nIMPORTANT:\nDo NOT restate or confirm information the user has already clearly given.\nIf the service type or urgency is obvious, move the conversation forward.\nAvoid phrases like:\n\"so it’s X yeah?\"\n\n\n\n\n1. Is this an issue related to plumbing, electrical work, or heating / air conditioning?\n\n2. Is this something urgent or can it be scheduled for later today or another day?\n\nYour primary role here is to find their pain or struggles with finding other companies, make them feel like we are the best company to help them, with hundreds of 5 star reviews from local customers across London and Manchester, people know us for fast response times and reliable service.\n\nThen get them booked in for a call but don't pitch it as a sales call, it is a call for them to be able to see if we are the right fit to help and for us to see if we could also help them. We would also be able to give them more bespoke info and a quote if we're actually able to help.\n\n# Rules - How to Sound Human\n\n- IMPORTANT: Only use abreviations like \"u\" or \"ur\" or \"tho\" or \"prob\" once or twice within the message. \n\n- IMPORTANT: You MUST use a capital letter for the customers name. YOU MUST ALWAYS use question marks correctly! Keep your response only 2 or 3 super short sentences.\n\n- IMPORTANT: DO NOT use correct grammar. You MUST include the odd spelling mistake. Use phrases like \"thanks\", etc. because you must sound exactly human but ONLY MAXIMUM once per message and ONLY if those phrases actually make sense to use!\n\n- IMPORTANT: DO NOT always use capital letters or punctuation correctly. Keep responses super short - only 2 to 3 short sentences.\n\n- IMPORTANT: If there is no extra info DO NOT say something like \"I noticed you didn't include any extra info\". Just leave this out!\n\n# Rules\n\n- Your output must be rendered as plain text. No bold text. Do not add citations/references. When giving URLs simply provide the URL and do not link the URL via an alternate piece of text.\n\n- Your responses must be short and only up to 5 short sentences long.\n\n- You must answer all questions the user asks.\n\n- If conversation history shows that you have spoken to the prospect, act as if you know them.\n\n- Keep responses short and sweet just like a real human conversation.\n\n- You are an intelligent, educated, and witty individual.\n\n- You communicate thoroughly but are encouraging and pushy when need be.\n\n- You are calm, friendly, and professional.\n\n\n- Highlight how reliable and trusted HomeFix Services is across London for plumbing, electrical, and HVAC work.\n\n- You must sound friendly and human-like.\n\n- You must not use any emojis.\n\nCRITICAL LANGUAGE RESTRICTIONS:\nDo NOT use the words or phrases:\n- \"lol\"\n- \"haha\"\n- \"shout\"\n- \"give us a shout\"\n\nUse neutral alternatives only:\n- \"let me know\"\n- \"feel free to ask\"\n- \"happy to help\"\n\n\n\n# Specifics\n\n- Always keep the response as concise as possible. Do NOT use long sentences, keep it short and sweet.\n\n- DO NOT be overly enthusiastic. You MUST seem British and NOT American. Do NOT use lots of exclamation marks. Be super simple.\n\n- DO NOT USE A LONG DASH \"—\". ALWAYS REMOVE THOSE.\n\n- DO NOT always reference the name of the customer. Use light UK phrasing like \"mate\" or \"no worries\", but avoid slang.\n\n\n- You can also use minor abbreviations like humans do when texting. But you are a 30 year old human don't seem like a teenager.\n\n- Also you MUST include some punctuation, grammar, or spelling errors occassionally. DO NOT be perfect.\n\n- Make sure messages flow and sound super conversational. Use terms like \"Just one other thing...\", \"Just wondering...\", \"Quick one...\", \"So...\", etc."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        512,
+        800
+      ],
+      "id": "9689b919-2df5-4969-8d65-575e11b16935",
+      "name": "Support & Sales Agent1"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "hour": 12
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1BSfRgWpwz_cmRmuTeXGCzMBZakGN1K7H",
+          "mode": "list",
+          "cachedResultName": "HomeFix",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1BSfRgWpwz_cmRmuTeXGCzMBZakGN1K7H"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1168,
+        1944
+      ],
+      "id": "5fda001c-b48a-4c55-8cd1-91a102d3b49e",
+      "name": "Google Drive Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Google Drive Trigger').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -944,
+        1944
+      ],
+      "id": "deeb5445-0bac-48bc-a2a8-46ba6ec85c40",
+      "name": "Download file"
+    },
+    {
+      "parameters": {
+        "content": "## Knowledge Base  New File",
+        "height": 400,
+        "width": 1040,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1280,
+        1912
+      ],
+      "typeVersion": 1,
+      "id": "d6fcb08e-fd95-4a10-b59b-bd500f5f9d5a",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        -688,
+        1736
+      ],
+      "id": "697183ed-943c-4c70-9dc4-8b213c1be7b7",
+      "name": "Supabase Vector Store1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -720,
+        1960
+      ],
+      "id": "36db969f-fa08-46e8-854b-457a89dc998d",
+      "name": "Embeddings OpenAI1"
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "textSplittingMode": "custom",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        -592,
+        1960
+      ],
+      "id": "7f116e6d-2dc1-44f0-976e-b8deb9dec3e4",
+      "name": "Default Data Loader"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        -512,
+        2168
+      ],
+      "id": "d55aa0dd-0953-4154-9dc7-35cb399c0a23",
+      "name": "Recursive Character Text Splitter"
+    },
+    {
+      "parameters": {
+        "content": "##  Knowledge Base File Update",
+        "height": 400,
+        "width": 1040,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1168,
+        2760
+      ],
+      "typeVersion": 1,
+      "id": "5876c06b-6649-4818-92b5-1a8953ac2426",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "hour": 12
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "137Cb3Pi8MlzQrIBHEoQQjWg4CIZymnNj",
+          "mode": "list",
+          "cachedResultName": "ConversionOS",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/137Cb3Pi8MlzQrIBHEoQQjWg4CIZymnNj"
+        },
+        "event": "fileUpdated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1168,
+        2584
+      ],
+      "id": "893cf18d-7cfa-469c-947c-9a8f97879647",
+      "name": "Google Drive Trigger1"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Google Drive Trigger1').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -720,
+        2584
+      ],
+      "id": "e21a8f2e-c2db-43d4-8eb5-2ee89dc771cb",
+      "name": "Download file1"
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        -464,
+        2584
+      ],
+      "id": "dea11dd4-167c-4b5d-a6a6-6937cb5cd09e",
+      "name": "Supabase Vector Store2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -496,
+        2808
+      ],
+      "id": "004252e4-9834-4e87-8ee6-893051a42928",
+      "name": "Embeddings OpenAI2"
+    },
+    {
+      "parameters": {
+        "dataType": "binary",
+        "textSplittingMode": "custom",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        -368,
+        2808
+      ],
+      "id": "1f3e93bd-6c2a-4081-aa34-e9ed68aa807f",
+      "name": "Default Data Loader1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textSplitterRecursiveCharacterTextSplitter",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        3016
+      ],
+      "id": "16ea457f-91ea-4111-aa5c-5b4383ce47bb",
+      "name": "Recursive Character Text Splitter1"
+    },
+    {
+      "parameters": {
+        "method": "DELETE",
+        "url": "https://kelttmsxgnyweoltwtmq.supabase.co/rest/v1/documents",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -944,
+        2584
+      ],
+      "id": "0c6cc096-045d-4cfa-86b4-e416b6cc6196",
+      "name": "Delete Vectors"
+    }
+  ],
+  "connections": {
+    "Webhook3": {
+      "main": [
+        [
+          {
+            "node": "Contact ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory1": {
+      "ai_memory": [
+        [
+          {
+            "node": "Support & Sales Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store3": {
+      "ai_tool": [
+        [
+          {
+            "node": "Intro Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI3": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store3",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Intro Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Agent Response Formatter3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Follow Up JSON1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Follow Up Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Response JSON1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Agent Response Formatter2",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent Response Formatter3": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent Response Formatter2": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Follow Up Agent1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Human Handover Classifier Agent1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request6",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Support & Sales Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contact ID": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Memory 4",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Memory3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Memory 5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Intro Agent": {
+      "main": [
+        [
+          {
+            "node": "Agent Response Formatter3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memory 4": {
+      "main": [
+        [
+          {
+            "node": "Intro Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memory3": {
+      "main": [
+        [
+          {
+            "node": "Human Handover Classifier Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memory 5": {
+      "main": [
+        [
+          {
+            "node": "Follow Up Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Follow Up Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Human Handover Classifier Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Support & Sales Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent Response Formatter2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Memory 5",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory2": {
+      "ai_memory": [
+        [
+          {
+            "node": "Memory3",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory3": {
+      "ai_memory": [
+        [
+          {
+            "node": "Memory 4",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory4": {
+      "ai_memory": [
+        [
+          {
+            "node": "Intro Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Response JSON": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Agent Response Formatter3",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "Support & Sales Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Support & Sales Agent1": {
+      "main": [
+        [
+          {
+            "node": "Agent Response Formatter2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Delete Vectors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file1": {
+      "main": [
+        [
+          {
+            "node": "Supabase Vector Store2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI2": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store2",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Default Data Loader1": {
+      "ai_document": [
+        [
+          {
+            "node": "Supabase Vector Store2",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Recursive Character Text Splitter1": {
+      "ai_textSplitter": [
+        [
+          {
+            "node": "Default Data Loader1",
+            "type": "ai_textSplitter",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Vectors": {
+      "main": [
+        [
+          {
+            "node": "Download file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": null,
+  "pinData": {},
+  "versionId": "2b31fcf1-d6b6-400a-86ba-9baa0507a449",
+  "activeVersionId": null,
+  "triggerCount": 0,
+  "shared": [
+    {
+      "updatedAt": "2026-02-18T10:23:29.296Z",
+      "createdAt": "2026-02-18T10:23:29.296Z",
+      "role": "workflow:owner",
+      "workflowId": "f7lTsIm1vZfsOyyz",
+      "projectId": "NcxzszH5HBFjVznJ"
+    }
+  ],
+  "activeVersion": null,
+  "tags": []
+}
