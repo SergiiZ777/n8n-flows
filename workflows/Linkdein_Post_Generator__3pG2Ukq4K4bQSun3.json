@@ -1,0 +1,16 @@
+{
+  "id": "3pG2Ukq4K4bQSun3",
+  "name": "Linkdein Post Generator",
+  "active": true,
+  "description": "YES",
+  "createdAt": "2025-11-21T15:41:05.803Z",
+  "updatedAt": "2026-05-26T20:17:10.671Z",
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Berlin",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": true,
+    "binaryMode": "separate"
+  },
+  "_note": "Full node details available - workflow has Schedule Trigger, 3x OpenAI Chat Models, Create LinkedIn Post Description agent (Tavily search), Create Image Prompt agent, Generate Title agent, HTTP Request (OpenAI image gen), Convert to File, Initialize Image Upload (LinkedIn), Merge, HTTP Request (LinkedIn upload), Code in JavaScript, HTTP Request (LinkedIn post), Send Post (Gmail)"
+}
